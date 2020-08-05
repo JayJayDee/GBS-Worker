@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "importHelpers": false,
+    "outDir": "dist",
+
+    // Lint
+    "alwaysStrict": true,
+    "allowUnreachableCode": false,
+    
+    "sourceMap": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["es2018.promise"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "src/**/*.test.ts"
+  ]
+}
