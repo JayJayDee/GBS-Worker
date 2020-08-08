@@ -1,5 +1,6 @@
 import { launch } from 'puppeteer';
-import { fetchArticles } from './dogdrip/article-fetcher';
+import { fetchArticles } from './fetchers/dogdrip/article-list-fetcher';
+import { fetchArticleContents } from './fetchers/dogdrip/article-content-fetcher';
 
 export const init =
   async () => {
@@ -7,8 +8,17 @@ export const init =
       headless: false
     });
     const page = (await browser.pages())[0];
-    await page.goto('https://www.dogdrip.net/index.php?mid=dogdrip&page=1');
+    
+    // const articles = await fetchArticles({
+    //   page,
+    //   pageAddress: 'https://www.dogdrip.net/index.php?mid=dogdrip&page=1'
+    // });
+    // console.log(articles);
 
-    await fetchArticles({ page });
+    await fetchArticleContents({
+      pageId: '273761788',
+      pageAddress: 'https://www.dogdrip.net/273761788',
+      page
+    });
   };
 init();
