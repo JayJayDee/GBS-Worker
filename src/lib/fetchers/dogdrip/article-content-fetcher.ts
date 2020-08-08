@@ -1,8 +1,13 @@
 import { Page, ElementHandle } from 'puppeteer';
 
-const checkIsImage = async (paragraph: ElementHandle) => {
+const checkIsImage = async ({ paragraph }: {
+  paragraph: ElementHandle
+}) => {
   try {
-    await paragraph.$('img');
+    const found = await paragraph.$eval('img', (elem) => elem);
+    if (!found) {
+      return false;
+    }
     return true;
   } catch (err) {
     return false;
@@ -14,7 +19,7 @@ const judgeParagraphEventType = async ({
 }: {
   paragraph: ElementHandle
 }) => {
-  const isImage = await checkIsImage(paragraph);
+  const isImage = await checkIsImage({ paragraph });
   if (isImage === true) {
     return 'image';
   }
@@ -27,7 +32,8 @@ const extractText = async ({
   paragraph: ElementHandle
 }) => {
   const text =
-    (await paragraph.evaluate((elem) => elem.innerHTML)).toString();
+    (await paragraph.evaluate((elem) => elem.innerText)).toString();
+  return text;
 };
 
 const extractImage = async ({
@@ -46,6 +52,7 @@ const parseSingleParagraph = async ({
   paragraph: ElementHandle
 }) => {
   const type = await judgeParagraphEventType({ paragraph });
+  console.log(type);
   
   if (type === 'image') {
     // case of image
@@ -56,9 +63,17 @@ const parseSingleParagraph = async ({
         url 
       }
     };
+
   } else if (type === 'text') {
     // case of text
-
+    const text = await extractText({ paragraph });
+    console.log(text);
+    return {
+      type: 'text',
+      data: {
+        text
+      }
+    };
   }
 
   return null;
@@ -73,5 +88,10 @@ export const fetchArticleContents =
     await page.goto(pageAddress);
 
     const paragraphs = await page.$$('div.xe_content > p');
-    console.log(paragraphs);
+    // console.log(paragraphs);
+
+    const promises =
+      paragraphs.map((paragraph) => parseSingleParagraph({ paragraph }));
+
+    await Promise.all(promises);
   };
