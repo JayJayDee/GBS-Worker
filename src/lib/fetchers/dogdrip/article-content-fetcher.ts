@@ -1,4 +1,5 @@
 import { Page, ElementHandle } from 'puppeteer';
+import { makeArticleUrl } from './patterns';
 
 const checkIsImage = async ({ paragraph }: {
   paragraph: ElementHandle
@@ -95,12 +96,11 @@ const filterEmpty = (element: Content | null) => {
  * returns Content[]
  */
 export const fetchArticleContents =
-  async ({ pageId, pageAddress, page }: {
-    pageId: string,
-    pageAddress: string,
+  async ({ articleId, page }: {
+    articleId: string,
     page: Page
   }) => {
-    await page.goto(pageAddress);
+    await page.goto(makeArticleUrl({ articleId }));
 
     // fetch paragraphs from page
     const paragraphs = await page.$$('#article_1 > div.xe_content > p');

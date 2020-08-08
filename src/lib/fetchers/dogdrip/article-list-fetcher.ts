@@ -1,9 +1,10 @@
 import { Page, ElementHandle } from 'puppeteer';
 
 import { wrapError } from '../../utils';
+import { makeArticleListUrl } from './patterns';
 
 type Article = {
-  id?: string;
+  articleId?: string;
   link?: string;
   title?: string;
 };
@@ -19,7 +20,7 @@ const queryArticleComponent =
           (await row.$eval('.ed .link-reset', (elem) => elem.href)).toString()
       );
 
-    const id =
+    const articleId =
       link ? link.split('/').pop() : null;
 
     const title =
@@ -28,23 +29,23 @@ const queryArticleComponent =
           (await (row.$eval('.ed .title-link', (elem) => elem.innerText))).toString()
       );
 
-    return { id, link, title };
+    return { articleId, link, title };
   };
 
 /**
- * fetchArticles from given page address
+ * fetchArticles from given page number
  */
-export const fetchArticles = async ({ pageAddress, page }: {
-  pageAddress: string,
+export const fetchArticles = async ({ numPage, page }: {
+  numPage: number,
   page: Page
 }) => {
-  await page.goto(pageAddress);
+  await page.goto(makeArticleListUrl({ numPage }));
   const articleRows = await page.$$('tr');
 
   const promises = articleRows.map((row) => queryArticleComponent({ row }));
   const datas = await Promise.all(promises);
 
   const filtered = datas.filter((data) =>
-    data.id && data.link && data.title);
+    data.articleId && data.link && data.title);
   return filtered;
 };
