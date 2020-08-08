@@ -46,14 +46,18 @@ const extractImage = async ({
   return imageUrl;
 };
 
+type Content = {
+  type: 'image' | 'text';
+  data: {[key: string]: any};
+};
+
 const parseSingleParagraph = async ({
   paragraph
 }: {
   paragraph: ElementHandle
-}) => {
+}): Promise<Content | null> => {
   const type = await judgeParagraphEventType({ paragraph });
-  console.log(type);
-  
+
   if (type === 'image') {
     // case of image
     const url = await extractImage({ paragraph });
@@ -67,7 +71,6 @@ const parseSingleParagraph = async ({
   } else if (type === 'text') {
     // case of text
     const text = await extractText({ paragraph });
-    console.log(text);
     return {
       type: 'text',
       data: {
@@ -79,6 +82,18 @@ const parseSingleParagraph = async ({
   return null;
 };
 
+const filterEmpty = (element: Content | null) => {
+  if (!element) return false;
+  if (element.type === 'text' && element.data.text.trim() === '') {
+    return false;
+  }
+  return true;
+}
+
+/**
+ * fetch Contents from given page address, puppeteer page.
+ * returns Content[]
+ */
 export const fetchArticleContents =
   async ({ pageId, pageAddress, page }: {
     pageId: string,
@@ -87,11 +102,18 @@ export const fetchArticleContents =
   }) => {
     await page.goto(pageAddress);
 
-    const paragraphs = await page.$$('div.xe_content > p');
-    // console.log(paragraphs);
+    // fetch paragraphs from page
+    const paragraphs = await page.$$('#article_1 > div.xe_content > p');
 
-    const promises =
-      paragraphs.map((paragraph) => parseSingleParagraph({ paragraph }));
+    const gatheredContents: Content[] = [];
 
-    await Promise.all(promises);
+    // parse all paragraphs
+    for (const paragraph of paragraphs) {
+      const content = await parseSingleParagraph({ paragraph });
+      gatheredContents.push(content);
+    }
+
+    // filter empty contents
+    const filtered = gatheredContents.filter(filterEmpty);
+    return filtered;
   };

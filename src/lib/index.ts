@@ -15,10 +15,11 @@ export const init =
     // });
     // console.log(articles);
 
-    await fetchArticleContents({
-      pageId: '273761788',
-      pageAddress: 'https://www.dogdrip.net/273761788',
+    const contents = await fetchArticleContents({
+      pageId: '273852095',
+      pageAddress: 'https://www.dogdrip.net/273852095',
       page
     });
+    console.log(contents);
   };
 init();

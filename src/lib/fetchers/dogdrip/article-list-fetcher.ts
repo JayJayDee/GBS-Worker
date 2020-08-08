@@ -1,21 +1,12 @@
 import { Page, ElementHandle } from 'puppeteer';
 
+import { wrapError } from '../../utils';
+
 type Article = {
   id?: string;
   link?: string;
   title?: string;
 };
-
-const wrapError =
-  async <T>(
-    func: () => Promise<T>
-  ): Promise<T | null> => {
-    try {
-      return await func();
-    } catch (err) {
-      return null;
-    }
-  };
 
 const queryArticleComponent =
   async ({ row }: {
