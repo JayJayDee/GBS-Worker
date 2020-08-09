@@ -16,11 +16,11 @@ export const init =
     // });
     // console.log(articles);
 
-    // const contents = await fetchArticleContents({
-    //   articleId: '273860452',
-    //   page
-    // });
-    // console.log(contents);
+    const contents = await fetchArticleContents({
+      articleId: '273860452',
+      page
+    });
+    console.log(contents);
 
     // const replies = await fetchArticleReplies({
     //   articleId: '273860452',
