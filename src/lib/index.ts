@@ -22,9 +22,10 @@ export const init =
     // });
     // console.log(contents);
 
-    await fetchArticleReplies({
-      articleId: '273860452',
-      page
-    });
+    // const replies = await fetchArticleReplies({
+    //   articleId: '273860452',
+    //   page
+    // });
+    // console.log(replies);
   };
 init();
