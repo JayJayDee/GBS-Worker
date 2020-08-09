@@ -6,3 +6,7 @@ export {
 export {
   ContentEntity
 } from './content-entity';
+
+export {
+  ReplyEntity
+} from './reply-entity';

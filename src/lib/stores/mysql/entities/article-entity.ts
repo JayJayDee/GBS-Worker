@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from 'typeorm';
 import { ContentEntity } from './content-entity';
+import { ReplyEntity } from './reply-entity';
 
 enum SiteEnum {
   DOGDRIP = 'dogdrip',
@@ -26,4 +27,7 @@ export class ArticleEntity {
 
   @OneToMany((type) => ContentEntity, (content) => content.article)
   public contents: ContentEntity[];
+
+  @OneToMany((type) => ReplyEntity, (reply) => reply.article)
+  public replies: ReplyEntity[];
 }
