@@ -18,8 +18,9 @@ export const establishMysqlConnection =
     return connection;
   };
 
-export const init =
+export const initMySQL =
   async () => {
+    await establishMysqlConnection({ logging: false });
   };
 
 const configMandatory = ({ source, key }: {

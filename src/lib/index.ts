@@ -6,7 +6,8 @@ import { fetchArticleReplies } from './fetchers/dogdrip/article-reply-fetcher';
 export const init =
   async () => {
     const browser = await launch({
-      headless: false
+      headless: false,
+      // args: [ '--no-sandbox' ]
     });
     const page = (await browser.pages())[0];
     

@@ -1,4 +1,5 @@
 import { Page, ElementHandle } from 'puppeteer';
+
 import { makeArticleUrl } from './patterns';
 
 const checkIsImage = async ({ paragraph }: {
