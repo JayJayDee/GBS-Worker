@@ -15,4 +15,5 @@ const log = logger({
   await connection.synchronize();
 
   log.info('sync completed.');
+  process.exit(0);
 })();

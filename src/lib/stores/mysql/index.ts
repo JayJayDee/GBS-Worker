@@ -1,4 +1,5 @@
 import { createConnection } from 'typeorm';
+import { ArticleEntity, ContentEntity, ReplyEntity } from './entities';
 
 type MysqlInitOptions = {
   logging?: boolean;
@@ -12,7 +13,12 @@ export const establishMysqlConnection =
       await createConnection({
         type: 'mysql',
         ...fetchMysqlConfig(),
-        ...opts ? opts : {}
+        ...opts ? opts : {},
+        entities: [
+          ArticleEntity,
+          ContentEntity,
+          ReplyEntity
+        ]
       });
 
     return connection;
