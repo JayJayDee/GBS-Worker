@@ -13,7 +13,7 @@
     
     "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
-    "lib": ["es2018.promise"],
+    "lib": ["es2018.promise", "ES2018", "DOM"],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "esModuleInterop": true

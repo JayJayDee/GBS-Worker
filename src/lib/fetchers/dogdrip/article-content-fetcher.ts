@@ -34,7 +34,7 @@ const extractText = async ({
   paragraph: ElementHandle
 }) => {
   const text =
-    (await paragraph.evaluate((elem) => elem.innerText)).toString();
+    (await paragraph.evaluate((elem: HTMLElement) => elem.innerText)).toString();
   return text;
 };
 
@@ -44,7 +44,7 @@ const extractImage = async ({
   paragraph: ElementHandle
 }) => {
   const imageUrl =
-    await paragraph.$eval('img', (elem) => elem.src);
+    await paragraph.$eval('img', (elem: HTMLElement) => elem.src);
   return imageUrl;
 };
 

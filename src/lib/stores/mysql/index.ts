@@ -1,4 +1,6 @@
 import { createConnection } from 'typeorm';
+
+import { configMandatory, configOptional } from '../../configurators';
 import { ArticleEntity, ContentEntity, ReplyEntity } from './entities';
 
 type MysqlInitOptions = {
@@ -29,36 +31,13 @@ export const initMySQL =
     await establishMysqlConnection({ logging: false });
   };
 
-const configMandatory = ({ source, key }: {
-  source: {[key: string]: any},
-  key: string
-}) => {
-  if (source[key] === undefined) {
-    throw new Error(`Configuration ${key} required`);
-  }
-  return source[key];
-}
-
-const configOptional = ({ source, key, defaultValue }: {
-  source: {[key: string]: any},
-  key: string,
-  defaultValue?: any
-}) => {
-  if (source[key] === undefined && defaultValue === undefined) {
-    throw new Error(`Configuration ${key} required`);
-  } else if (source[key] === undefined) {
-    return defaultValue;
-  }
-  return source[key];
-}
-
 const mysqlConnectionConfigurator =
   (source: {[key: string]: any}) =>
     () =>
       ({
-        host: configMandatory({ source, key: 'MYSQL_HOST' }),
-        port: configOptional({ source, key: 'MYSQL_PORT', defaultValue: 3306 }),
-        database: configMandatory({ source, key: 'MYSQL_DATABASE' }),
-        username: configMandatory({ source, key: 'MYSQL_USER' }),
-        password: configMandatory({ source, key: 'MYSQL_PASSWORD' }),
+        host: configMandatory<string>({ source, key: 'MYSQL_HOST' }),
+        port: configOptional<number>({ source, key: 'MYSQL_PORT', defaultValue: 3306 }),
+        database: configMandatory<string>({ source, key: 'MYSQL_DATABASE' }),
+        username: configMandatory<string>({ source, key: 'MYSQL_USER' }),
+        password: configMandatory<string>({ source, key: 'MYSQL_PASSWORD' }),
       });

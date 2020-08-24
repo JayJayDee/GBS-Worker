@@ -5,4 +5,8 @@ Crawler worker for GBS services.
 Comming soon
 
 ## How to run
-TBD
+
+### Synchronize database via TypeORM
+```bash
+npm run cli:sync
+```
